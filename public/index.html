@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lexora - Decode Text</title>
+    <link rel="stylesheet" href="home.css">
+</head>
+<body>
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+
+    <header class="header">
+        <nav class="nav container">
+            <a href="#" class="logo">Lexora</a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <h1 class="hero-title">Decode Text</h1>
+            <p class="hero-subtitle">
+                Uncover hidden meanings, analyze sentiment, and understand the true intentions behind any text with our advanced AI-powered analysis tool.
+            </p>
+
+            <div class="analysis-form">
+                <form id="analysisForm">
+                    <label for="urlInput" class="form-label">Enter URL for analysis</label>
+                    <input 
+                        type="url" 
+                        id="urlInput" 
+                        class="url-input" 
+                        placeholder="https://example.com/article"
+                        required
+                    >
+                    <button type="submit" class="analyze-btn" id="analyzeBtn">
+                        <span class="btn-text">Analyze URL →</span>
+                    </button>
+                </form>
+
+                <div class="loading" id="loading">
+                    <div class="loading-dots">
+                        <div class="loading-dot"></div>
+                        <div class="loading-dot"></div>
+                        <div class="loading-dot"></div>
+                    </div>
+                    <p style="margin-top: 10px; color: #5A6C7D;" id="loadingText">Analyzing content...</p>
+                </div>
+
+                <div class="error-message" id="errorMessage" style="display: none;">
+                    <p style="color: #e74c3c; margin-top: 20px; padding: 15px; background: rgba(231, 76, 60, 0.1); border-radius: 8px;"></p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- What We Analyze Section -->
+    <section class="analyze-section">
+        <div class="container">
+            <h2 class="analyze-title">What We Analyze</h2>
+            <p class="analyze-subtitle">
+                Our AI examines multiple dimensions of your text to provide comprehensive insights
+            </p>
+            
+            <div class="analyze-grid">
+                <div class="analyze-card">
+                    <div class="analyze-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14,2 14,8 20,8"/>
+                            <line x1="16" y1="13" x2="8" y2="13"/>
+                            <line x1="16" y1="17" x2="8" y2="17"/>
+                            <polyline points="10,9 9,9 8,9"/>
+                        </svg>
+                    </div>
+                    <h3 class="analyze-card-title">Themes & Topics</h3>
+                    <p class="analyze-card-text">
+                        Identify the main subjects, recurring themes, and key topics discussed in your text.
+                    </p>
+                </div>
+
+                <div class="analyze-card">
+                    <div class="analyze-icon tone-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M12 1v6M12 17v6M4.22 4.22l4.24 4.24M15.54 15.54l4.24 4.24M1 12h6M17 12h6M4.22 19.78l4.24-4.24M15.54 8.46l4.24-4.24"/>
+                        </svg>
+                    </div>
+                    <h3 class="analyze-card-title">Tone & Sentiment</h3>
+                    <p class="analyze-card-text">
+                        Understand the emotional tone, sentiment polarity, and overall mood of the content.
+                    </p>
+                </div>
+
+                <div class="analyze-card">
+                    <div class="analyze-icon purpose-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <circle cx="12" cy="12" r="6"/>
+                            <circle cx="12" cy="12" r="2"/>
+                        </svg>
+                    </div>
+                    <h3 class="analyze-card-title">Intent & Purpose</h3>
+                    <p class="analyze-card-text">
+                        Discover the underlying intentions, goals, and purpose behind the author's words.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:3000'; // Update this for production
+
+        document.getElementById('analysisForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const url = document.getElementById('urlInput').value.trim();
+            const loading = document.getElementById('loading');
+            const btn = document.getElementById('analyzeBtn');
+            const errorMessage = document.getElementById('errorMessage');
+            const loadingText = document.getElementById('loadingText');
+            
+            // Reset error message
+            errorMessage.style.display = 'none';
+            
+            if (!url) {
+                showError('Please enter a valid URL');
+                return;
+            }
+
+            // Show loading state
+            loading.style.display = 'block';
+            btn.disabled = true;
+            btn.style.opacity = '0.7';
+            
+            // Update loading messages
+            const loadingMessages = [
+                'Fetching content...',
+                'Extracting main text...',
+                'Analyzing with AI...',
+                'Generating insights...',
+                'Almost done...'
+            ];
+            
+            let messageIndex = 0;
+            const messageInterval = setInterval(() => {
+                if (messageIndex < loadingMessages.length - 1) {
+                    messageIndex++;
+                    loadingText.textContent = loadingMessages[messageIndex];
+                }
+            }, 3000);
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/analyze`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ url })
+                });
+
+                const data = await response.json();
+
+                clearInterval(messageInterval);
+
+                if (!response.ok) {
+                    throw new Error(data.error || `HTTP error! status: ${response.status}`);
+                }
+
+                if (data.success && data.analysis) {
+                    // Store analysis data for the results page
+                    sessionStorage.setItem('analysisData', JSON.stringify(data.analysis));
+                    
+                    // Redirect to results page
+                    window.location.href = `result.html?url=${encodeURIComponent(url)}`;
+                } else {
+                    throw new Error('Invalid response from server');
+                }
+
+            } catch (error) {
+                clearInterval(messageInterval);
+                console.error('Analysis error:', error);
+                
+                let errorMsg = 'Failed to analyze URL. ';
+                if (error.message.includes('fetch')) {
+                    errorMsg += 'Please check your internet connection and make sure the server is running.';
+                } else {
+                    errorMsg += error.message;
+                }
+                
+                showError(errorMsg);
+            } finally {
+                // Hide loading state
+                loading.style.display = 'none';
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                loadingText.textContent = 'Analyzing content...';
+            }
+        });
+
+        function showError(message) {
+            const errorMessage = document.getElementById('errorMessage');
+            const errorP = errorMessage.querySelector('p');
+            errorP.textContent = message;
+            errorMessage.style.display = 'block';
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Add some interactivity to the URL input
+        const urlInput = document.getElementById('urlInput');
+        urlInput.addEventListener('input', function() {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.style.display = 'none';
+            
+            if (this.value.length > 0) {
+                this.style.borderColor = '#8FA3B8';
+            } else {
+                this.style.borderColor = '#D4C5B9';
+            }
+        });
+
+        // Validate URL format
+        urlInput.addEventListener('blur', function() {
+            const url = this.value.trim();
+            if (url && !isValidUrl(url)) {
+                showError('Please enter a valid URL (e.g., https://example.com)');
+                this.focus();
+            }
+        });
+
+        function isValidUrl(string) {
+            try {
+                const url = new URL(string);
+                return url.protocol === 'http:' || url.protocol === 'https:';
+            } catch (_) {
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>
