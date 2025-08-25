@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Results - Lexora</title>
+    <link rel="stylesheet" href="results-styles.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <a href="index.html" class="logo">Lexora</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="results-main">
+        <div class="container">
+            <!-- Back to Home Button -->
+            <a href="index.html" class="back-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Back to Home
+            </a>
+
+            <!-- Page Title -->
+            <h1 class="results-title">Analysis Results</h1>
+            <p class="results-subtitle">Here's what we discovered about your URL content</p>
+
+            <!-- Analyzed URL Section -->
+            <div class="analyzed-url-section">
+                <h2 class="section-title">Analyzed URL</h2>
+                <div class="url-display" id="analyzedUrl">
+                    Loading...
+                </div>
+                <div class="metadata-display" id="metadataDisplay" style="display: none;">
+                    <div class="metadata-item">
+                        <strong>Title:</strong> <span id="pageTitle"></span>
+                    </div>
+                    <div class="metadata-item">
+                        <strong>Content Type:</strong> <span id="contentType"></span>
+                    </div>
+                    <div class="metadata-item">
+                        <strong>Target Audience:</strong> <span id="targetAudience"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div class="loading-state" id="loadingState">
+                <div class="loading-dots">
+                    <div class="loading-dot"></div>
+                    <div class="loading-dot"></div>
+                    <div class="loading-dot"></div>
+                </div>
+                <p>Loading analysis results...</p>
+            </div>
+
+            <!-- Error State -->
+            <div class="error-state" id="errorState" style="display: none;">
+                <div class="error-icon">⚠️</div>
+                <h3>Analysis Not Available</h3>
+                <p>We couldn't load the analysis results. Please try analyzing the URL again.</p>
+                <button class="btn-primary" onclick="window.location.href='index.html'">
+                    Analyze New URL
+                </button>
+            </div>
+
+            <!-- Results Grid -->
+            <div class="results-content" id="resultsContent" style="display: none;">
+                <!-- Main Themes -->
+                <div class="results-grid">
+                    <div class="result-card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                    <polyline points="14,2 14,8 20,8"/>
+                                    <line x1="16" y1="13" x2="8" y2="13"/>
+                                    <line x1="16" y1="17" x2="8" y2="17"/>
+                                </svg>
+                            </div>
+                            <h3 class="card-title">Main Themes</h3>
+                        </div>
+                        <div class="card-content" id="themesContent">
+                            <!-- Themes will be populated here -->
+                        </div>
+                    </div>
+
+                    <!-- Tone & Sentiment -->
+                    <div class="result-card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="3"/>
+                                    <path d="M12 1v6M12 17v6M4.22 4.22l4.24 4.24M15.54 15.54l4.24 4.24M1 12h6M17 12h6M4.22 19.78l4.24-4.24M15.54 8.46l4.24-4.24"/>
+                                </svg>
+                            </div>
+                            <h3 class="card-title">Tone & Sentiment</h3>
+                        </div>
+                        <div class="card-content" id="sentimentContent">
+                            <!-- Sentiment will be populated here -->
+                        </div>
+                    </div>
+
+                    <!-- Detected Intentions -->
+                    <div class="result-card">
+                        <div class="card-header">
+                            <div class="card-icon intent-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <circle cx="12" cy="12" r="6"/>
+                                    <circle cx="12" cy="12" r="2"/>
+                                </svg>
+                            </div>
+                            <h3 class="card-title">Detected Intentions</h3>
+                        </div>
+                        <div class="card-content" id="intentionsContent">
+                            <!-- Intentions will be populated here -->
+                        </div>
+                    </div>
+
+                    <!-- Key Insights -->
+                    <div class="result-card full-width">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M9 11H5a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h4l2-4 4-4V6a2 2 0 0 0-2-2H9v7z"/>
+                                    <path d="M13 6v6l4-4-4-4z"/>
+                                </svg>
+                            </div>
+                            <h3 class="card-title">Key Insights</h3>
+                        </div>
+                        <div class="card-content" id="insightsContent">
+                            <!-- Insights will be populated here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary Section -->
+                <div class="summary-section">
+                    <div class="summary-header">
+                        <div class="summary-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                            </svg>
+                        </div>
+                        <h2 class="summary-title">Content Summary</h2>
+                    </div>
+                    <div class="summary-text" id="summaryText">
+                        <!-- Summary will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Actionable Points -->
+                <div class="actionable-section" id="actionableSection" style="display: none;">
+                    <div class="actionable-header">
+                        <div class="actionable-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                <polyline points="22,4 12,14.01 9,11.01"/>
+                            </svg>
+                        </div>
+                        <h2 class="actionable-title">Actionable Points</h2>
+                    </div>
+                    <div class="actionable-content" id="actionableContent">
+                        <!-- Actionable points will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="btn-primary" onclick="window.location.href='index.html'">
+                        Analyze New URL
+                    </button>
+                    <button class="btn-secondary" onclick="window.print()">
+                        Print Results
+                    </button>
+                    <button class="btn-secondary" onclick="shareResults()">
+                        Share Results
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Get URL from query parameters and analysis data from session storage
+        const urlParams = new URLSearchParams(window.location.search);
+        const analyzedUrl = urlParams.get('url');
+        
+        if (analyzedUrl) {
+            document.getElementById('analyzedUrl').textContent = analyzedUrl;
+        }
+
+        // Load analysis results
+        function loadAnalysisResults() {
+            const analysisData = sessionStorage.getItem('analysisData');
+            
+            if (!analysisData) {
+                showError();
+                return;
+            }
+
+            try {
+                const analysis = JSON.parse(analysisData);
+                populateResults(analysis);
+                
+                // Hide loading state and show results
+                document.getElementById('loadingState').style.display = 'none';
+                document.getElementById('resultsContent').style.display = 'block';
+                
+            } catch (error) {
+                console.error('Error parsing analysis data:', error);
+                showError();
+            }
+        }
+
+        function populateResults(analysis) {
+            // Populate metadata
+            if (analysis.metadata) {
+                const metadataDisplay = document.getElementById('metadataDisplay');
+                document.getElementById('pageTitle').textContent = analysis.metadata.title || 'N/A';
+                document.getElementById('contentType').textContent = analysis.contentType || 'Web Content';
+                document.getElementById('targetAudience').textContent = analysis.targetAudience || 'General Audience';
+                metadataDisplay.style.display = 'block';
+            }
+
+            // Populate themes
+            const themesContent = document.getElementById('themesContent');
+            if (analysis.themes && analysis.themes.length > 0) {
+                themesContent.innerHTML = analysis.themes.map(theme => 
+                    `<div class="theme-tag">${theme}</div>`
+                ).join('');
+            } else {
+                themesContent.innerHTML = '<div class="theme-tag">General Content</div>';
+            }
+
+            // Populate sentiment
+            const sentimentContent = document.getElementById('sentimentContent');
+            if (analysis.sentiment) {
+                const sentimentClass = analysis.sentiment.overall.toLowerCase();
+                const toneClass = analysis.sentiment.tone ? analysis.sentiment.tone.toLowerCase().replace(/\s+/g, '-') : 'neutral';
+                
+                sentimentContent.innerHTML = `
+                    <div class="sentiment-row">
+                        <span class="label">Overall Sentiment:</span>
+                        <span class="value-tag ${sentimentClass}">${capitalizeFirst(analysis.sentiment.overall)}</span>
+                    </div>
+                    <div class="sentiment-row">
+                        <span class="label">Tone:</span>
+                        <span class="value-tag ${toneClass}">${capitalizeFirst(analysis.sentiment.tone)}</span>
+                    </div>
+                    <div class="sentiment-row">
+                        <span class="label">Confidence:</span>
+                        <span class="value-tag ${analysis.sentiment.confidence}">${capitalizeFirst(analysis.sentiment.confidence)}</span>
+                    </div>
+                `;
+            }
+
+            // Populate intentions
+            const intentionsContent = document.getElementById('intentionsContent');
+            if (analysis.intentions && analysis.intentions.length > 0) {
+                intentionsContent.innerHTML = analysis.intentions.map(intention => 
+                    `<div class="intention-item">
+                        <span class="bullet">•</span>
+                        <span>${intention}</span>
+                    </div>`
+                ).join('');
+            } else {
+                intentionsContent.innerHTML = '<div class="intention-item"><span class="bullet">•</span><span>Information Sharing</span></div>';
+            }
+
+            // Populate key insights
+            const insightsContent = document.getElementById('insightsContent');
+            if (analysis.keyInsights && analysis.keyInsights.length > 0) {
+                insightsContent.innerHTML = analysis.keyInsights.map(insight => 
+                    `<div class="insight-item">
+                        <span class="insight-bullet">•</span>
+                        <span>${insight}</span>
+                    </div>`
+                ).join('');
+            } else {
+                insightsContent.innerHTML = '<div class="insight-item"><span class="insight-bullet">•</span><span>Content analysis completed successfully</span></div>';
+            }
+
+            // Populate summary
+            const summaryText = document.getElementById('summaryText');
+            if (analysis.summary) {
+                // Split summary into paragraphs if it's a long text
+                const paragraphs = analysis.summary.split('\n\n').filter(p => p.trim());
+                if (paragraphs.length > 1) {
+                    summaryText.innerHTML = paragraphs.map(p => `<p>${p.trim()}</p>`).join('');
+                } else {
+                    summaryText.innerHTML = `<p>${analysis.summary}</p>`;
+                }
+            } else {
+                summaryText.innerHTML = '<p>No summary available for this content.</p>';
+            }
+
+            // Populate actionable points if available
+            if (analysis.actionablePoints && analysis.actionablePoints.length > 0) {
+                const actionableSection = document.getElementById('actionableSection');
+                const actionableContent = document.getElementById('actionableContent');
+                
+                actionableContent.innerHTML = analysis.actionablePoints.map(point => 
+                    `<div class="actionable-item">
+                        <span class="actionable-bullet">✓</span>
+                        <span>${point}</span>
+                    </div>`
+                ).join('');
+                
+                actionableSection.style.display = 'block';
+            }
+        }
+
+        function capitalizeFirst(str) {
+            if (!str) return '';
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        function showError() {
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('errorState').style.display = 'block';
+        }
+
+        function shareResults() {
+            const url = document.getElementById('analyzedUrl').textContent;
+            const text = `Check out this text analysis from Lexora: ${url}`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Text Analysis Results - Lexora',
+                    text: text,
+                    url: window.location.href
+                }).catch(console.error);
+            } else {
+                // Fallback: copy to clipboard
+                navigator.clipboard.writeText(text + '\n' + window.location.href)
+                    .then(() => alert('Results link copied to clipboard!'))
+                    .catch(() => alert('Unable to share. Please copy the URL manually.'));
+            }
+        }
+
+        // Load results when page loads
+        document.addEventListener('DOMContentLoaded', loadAnalysisResults);
+
+        // Handle back button
+        window.addEventListener('popstate', function() {
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>
