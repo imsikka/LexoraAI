@@ -115,7 +115,10 @@
     </section>
 
     <script>
-        const API_BASE_URL = 'http://localhost:3000'; // Update this for production
+        // ✅ FIXED: Auto-detect environment - works for both development and production
+        const API_BASE_URL = window.location.hostname === 'localhost' 
+            ? 'http://localhost:3000' 
+            : window.location.origin;
 
         document.getElementById('analysisForm').addEventListener('submit', async function(e) {
             e.preventDefault();
